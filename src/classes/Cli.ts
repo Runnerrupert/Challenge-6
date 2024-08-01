@@ -4,6 +4,7 @@ import Truck from "./Truck.js";
 import Car from "./Car.js";
 import Motorbike from "./Motorbike.js";
 import Wheel from "./Wheel.js";
+import Vehicle from "./Vehicle.js";
 
 // define the Cli class
 class Cli {
@@ -275,7 +276,7 @@ class Cli {
 
   // method to find a vehicle to tow
   // TODO: add a parameter to accept a truck object
-  findVehicleToTow(vehicles: Truck): void {
+  findVehicleToTow(truck: Truck): void {
     inquirer
       .prompt([
         {
@@ -292,12 +293,11 @@ class Cli {
       ])
       .then((answers) => {
         // TODO: check if the selected vehicle is the truck
-        if (answers.choices === this.vehicles) {
-          console.log(`The ${vehicles.make} ${vehicles.model} cannot tow itself`) {
-            this.performActions();
-          }
+        if (answers.vehicleToTow === truck) {
+          console.log(`The ${truck.make} ${truck.model} cannot tow itself`) 
+          this.performActions();
         } else {
-          vehicles.tow(answers.choices);
+          truck.tow(answers.vehicleToTow);
           this.performActions();
         }
         // TODO: if it is, log that the truck cannot tow itself then perform actions on the truck to allow the user to select another action
@@ -319,6 +319,8 @@ class Cli {
             'Start vehicle',
             'Accelerate 5 MPH',
             'Decelerate 5 MPH',
+            'Tow a vehicle',
+            'Do a wheelie',
             'Stop vehicle',
             'Turn right',
             'Turn left',
@@ -384,6 +386,29 @@ class Cli {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].reverse();
+            }
+          }
+        } else if (answers.action === 'Tow a vehicle') {
+          for (let i = 0; i < this.vehicles.length; i++) {
+            if (this.vehicles[i].vin === this.selectedVehicleVin) {
+              if (this.vehicles[i] instanceof Truck) {
+                const selectedVehicle = this.vehicles[i] as Truck;
+                this.findVehicleToTow(selectedVehicle);
+                return;
+              } else {
+                console.log(`${this.vehicles[i].make} ${this.vehicles[i].model} cannot tow because it is not a truck`);
+              }
+            }
+          }
+        } else if (answers.action === 'Do a wheelie') {
+          for (let i = 0; i < this.vehicles.length; i++) {
+            if (this.vehicles[i].vin === this.selectedVehicleVin) {
+              if (this.vehicles[i] instanceof Motorbike) {
+                const selectedVehicle = this.vehicles[i] as Motorbike;
+                selectedVehicle.wheelie();
+              } else {
+                console.log(`${this.vehicles[i].make} ${this.vehicles[i].model} cannot do a wheelie because it is not a motorbike`);
+              }
             }
           }
         }
