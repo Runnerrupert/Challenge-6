@@ -46,7 +46,7 @@ University Of Utah Coding Bootcamp and Cameron Barfuss
 
 ## Tests
 
-[Demo](https://watch.screencastify.com/v/aWjtUa3frbZGiscQR0KL)
+Demolink - https://watch.screencastify.com/v/aWjtUa3frbZGiscQR0KL
 
 ---
 
